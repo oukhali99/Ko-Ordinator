@@ -1,0 +1,30 @@
+{
+  "name": "chiller-backend",
+  "version": "0.1.0",
+  "description": "An app that lets you co-ordinate meetups with friends",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oukhali99/Chiller-backend.git"
+  },
+  "author": "Khalifeh Oussama",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oukhali99/Chiller-backend/issues"
+  },
+  "homepage": "https://github.com/oukhali99/Chiller-backend#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "email-validator": "^2.0.4",
+    "express": "^4.17.1",
+    "mongo-sanitize": "^1.1.0",
+    "mongoose": "^5.10.0",
+    "nodemailer": "^6.4.11"
+  }
+}
