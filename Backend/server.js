@@ -22,8 +22,6 @@ let mongoDBConnected = false;
 mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex : true});
 const connection = mongoose.connection;
 connection.on("open", () => {
-    const DATABASE_CLEANUP_INTERVAL_MS = parseInt(process.env.DATABASE_CLEANUP_INTERVAL_MS);
-
     console.log("MongoDB Connected");
     mongoDBConnected = true;
 
@@ -39,7 +37,7 @@ connection.on("open", () => {
                 const dateTimestamp = userSession.timestamp;
                 const sTimestampUserSession = dateTimestamp.getTime() / 1000;
                 const sDifference = sTimestampNow - sTimestampUserSession;
-                const sDifferenceMax = process.env.SESSION_TIMOUT_S;
+                const sDifferenceMax = process.env.APP_SESSION_TIMOUT_S;
                 const sessionId = userSession._id;
                 if (sDifference > sDifferenceMax)
                 {
@@ -53,7 +51,7 @@ connection.on("open", () => {
         {
             handleError(e, undefined, true, false, true);
         }
-    }, process.env.DATABASE_CLEANUP_INTERVAL_MS);
+    }, process.env.DATABASE_CLEANUP_INTERVAL_S * 1000);
 })
 
 // Set up Routers

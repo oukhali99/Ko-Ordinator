@@ -187,7 +187,7 @@ router.route('/activate').get(async (req, res) => {
         //const data = {success: true, message: 'Successfully activated your account'};
         //sendFormattedJSON(data, res);
 
-        res.send("Successfully avtivated your account. <a href='https://www.valiant-soft.ca'>Click here</a> to proceed")
+        res.send("Successfully avtivated your account! You may close this window")
     }
     catch (e)
     {
