@@ -150,7 +150,7 @@ async function sendActivationEmail(email)
     const href = 'https://' + process.env.HOSTNAME + ':' + process.env.PORT + '/users/activate?email=' + email + '&activationToken=' + activationToken;
     const html = 'To activate your account, <a href="' + href + '">click here</a>';
 
-    await sendEmail(email, 'Welcome to Ko-Ordinator!', html);
+    //await sendEmail(email, 'Welcome to Ko-Ordinator!', html);
 }
 
 async function cleanupAvailabilities(userId, res)

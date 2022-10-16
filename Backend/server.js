@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const https = require('https');
+const http = require('http')
 const fs = require('fs');
 const UserSession = require('./models/UserSession');
 const { handleError } = require('./lib/valiant-lib');
@@ -12,8 +13,9 @@ const HOSTNAME = process.env.HOSTNAME;
 const PORT = process.env.PORT;
 
 const app = express();
-const privateKey = fs.readFileSync(process.env.SSL_KEY_FILE, 'utf8');
-const certificate = fs.readFileSync(process.env.SSL_CRT_FILE, 'utf8');
+const  useHttps = process.env.HTTPS === "true";
+const privateKey = useHttps ? fs.readFileSync(process.env.SSL_KEY_FILE, 'utf8') : undefined;
+const certificate = useHttps ? fs.readFileSync(process.env.SSL_CRT_FILE, 'utf8') : undefined;
 const credentials = {key: privateKey, cert: certificate};
 
 let mongoDBConnected = false;
@@ -73,7 +75,13 @@ app.use('/availabilities', availabilitiesRouter);
 app.use('/friends', friendsRouter);
 app.use('/groups', groupsRouter);
 
-// Make HTTPS Listen
-const httpsServer = https.createServer(credentials, app);
-httpsServer.listen(process.env.PORT);
+// Make HTTP/HTTPS Listen
+if (useHttps) {
+    const httpsServer = https.createServer(credentials, app);
+    httpsServer.listen(process.env.PORT);
+}
+else {
+    const httpServer = http.createServer(credentials, app);
+    httpServer.listen(process.env.PORT);
+}
 

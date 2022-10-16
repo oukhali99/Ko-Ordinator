@@ -20,7 +20,8 @@ const userSchema = new mongoose.Schema({
     },
     activated: {
         type: Boolean,
-        required: true
+        required: true,
+        default: true
     },
     hashedPassword: {
         type: String,

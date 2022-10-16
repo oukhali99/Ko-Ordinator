@@ -132,17 +132,17 @@ router.route('/register').post(async (req, res) => {
         // Create an activation token
         const validationToken = await newUser.generateValidationToken(username);
         newUser.activationToken = validationToken;
-        newUser.activated = false;
+        //newUser.activated = false;
 
         // Save to database
         await newUser.save();
-
-        // Send an activation e-mail
-        sendActivationEmail(email)
         
         // Send response
         data = {success: true, message: 'Successfully registered user ' + username + '. Check your e-mail for an activation link!'};
         sendFormattedJSON(data, res);
+
+        // Send an activation e-mail
+        sendActivationEmail(email)
     }
     catch (e)
     {
