@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import Session from '../src/Components/Session';
+import Session from './main/components/Session';
 
 const sessionRef = React.createRef();
 const session = <Session ref={sessionRef} showSession={false} pollAPI={true}/> // pollAPI cannot accurately tell us if the user's session has expired

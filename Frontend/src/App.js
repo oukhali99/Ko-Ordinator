@@ -1,15 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Register from './Components/Register';
-import Navbar from './Components/Navbar';
-import Home from './Components/Home';
-import UserList from './Components/UserList';
-import Login from './Components/Login';
-import AdminPanel from './Components/AdminPanel';
-import Availabilities from './Components/Availabilities';
-import Friends from './Components/Friends';
-import Groups from './Components/Groups';
-import RegisterApp from './Components/RegisterApp';
+import Register from './main/components/Register';
+import Navbar from './main/components/Navbar';
+import Home from './main/components/Home';
+import UserList from './main/components/UserList';
+import Login from './main/components/Login';
+import AdminPanel from './main/components/AdminPanel';
+import Availabilities from './main/components/Availabilities';
+import Friends from './main/components/Friends';
+import Groups from './main/components/Groups';
+import RegisterApp from './main/components/RegisterApp';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
