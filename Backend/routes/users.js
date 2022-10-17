@@ -136,17 +136,17 @@ router.route('/register').post(async (req, res) => {
 
         // Save to database
         await newUser.save();
+
+        // Send an activation e-mail        
+        await sendActivationEmail(email);
         
         // Send response
         data = {success: true, message: 'Successfully registered user ' + username + '. Check your e-mail for an activation link!'};
         sendFormattedJSON(data, res);
-
-        // Send an activation e-mail
-        sendActivationEmail(email)
     }
     catch (e)
     {
-        handleError(e, res, true, false, true);
+        handleError(e, res, true, true, false);
     }
 });
 
