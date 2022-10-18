@@ -92,10 +92,9 @@ class SessionClock extends React.Component
             return;
         }
 
-        const sessionState = this.props.sessionState;
         this.setState({
             timestamp: new Date(),
-            sessionTimestamp: sessionState.sessionTimestamp
+            sessionTimestamp: this.props.sessionState.sessionTimestamp 
         });
     }
 
