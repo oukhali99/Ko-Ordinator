@@ -35,7 +35,11 @@ class AccountController extends React.Component
 
         return (
             <div style={{fontSize: "18px"}}>
-                <SessionClock loggedIn={loggedIn} sessionState={this.props.sessionState}/>
+                <SessionClock
+                    loggedIn={loggedIn}
+                    sessionState={this.props.sessionState}
+                    setSessionState={this.props.setSessionState}
+                />
                 <div style={{color: "white", display: "inline-block", marginRight: "10px"}}>
                     {username}
                 </div>
@@ -74,11 +78,13 @@ class SessionClock extends React.Component
         }
 
         this.tick = this.tick.bind(this);
+        this.updateSessionFromAPI = this.updateSessionFromAPI.bind(this);
     }
 
     componentDidMount()
     {
         this.timerId = setInterval(this.tick, 1000);
+        this.pollAPIId = setInterval(async () => { await this.updateSessionFromAPI() }, 1000 * process.env.REACT_APP_API_POLL_INTERVAL_S)
     }
     componentWillUnmount()
     {
@@ -96,6 +102,28 @@ class SessionClock extends React.Component
             timestamp: new Date(),
             sessionTimestamp: this.props.sessionState.sessionTimestamp 
         });
+    }
+
+    async updateSessionFromAPI()
+    {
+        // Prepare the body of the call
+        const body = {sessionId: this.props.sessionState.sessionId, userId: this.props.sessionState.userId};
+
+        // Do the call
+        const res = await axios.post(process.env.REACT_APP_SERVER_URL + '/users/getUserDocument', body);
+        
+        // Check if failed the call
+        if (!res.data.success)
+        {
+            console.log('Updating session from API... ' + res.data.message);
+            return;
+        }
+
+        // Get the call data
+        const data = res.data.content;
+
+        // Set the states to reflect the fact that you are logged in
+        this.props.setSessionState(data);
     }
 
     render()
@@ -140,6 +168,7 @@ const stateToProps = state => ({
 
 const dispatchToProps = {
     setAppState: mainActions.setAppState,
+    setSessionState: mainActions.setSessionState,
     clearSessionState: mainActions.clearSessionState
 };
 

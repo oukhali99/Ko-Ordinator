@@ -153,7 +153,7 @@ class HourCell extends React.Component
     {
         const weekday = this.props.weekday;
         const hour = this.props.hour;        
-        const availabilities = this.state.availabilities;
+        const availabilities = this.props.sessionState.availabilities;
 
         const userIsAvailable = availabilities.some(availability => availability.hour === hour && availability.weekday === weekday);
         
