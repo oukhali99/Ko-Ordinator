@@ -15,7 +15,7 @@ class AccountController extends React.Component
 
     async logoff()
     {
-        const sessionState = this.props.methods.getSessionState();
+        const sessionState = this.props.sessionState;
         const userId = sessionState.userId;
         const sessionId = sessionState.sessionId;
 
@@ -31,14 +31,14 @@ class AccountController extends React.Component
 
     render()
     {
-        const sessionState = this.props.methods.getSessionState();
+        const sessionState = this.props.sessionState;
         const username = sessionState.username;
 
         const loggedIn = this.props.appState.loggedIn;
 
         return (
             <div style={{fontSize: "18px"}}>
-                <SessionClock loggedIn={loggedIn} methods={this.props.methods}/>
+                <SessionClock loggedIn={loggedIn} sessionState={this.props.sessionState}/>
                 <div style={{color: "white", display: "inline-block", marginRight: "10px"}}>
                     {username}
                 </div>
@@ -95,7 +95,7 @@ class SessionClock extends React.Component
             return;
         }
 
-        const sessionState = this.props.methods.getSessionState();
+        const sessionState = this.props.sessionState;
         this.setState({
             timestamp: new Date(),
             sessionTimestamp: sessionState.sessionTimestamp
@@ -138,7 +138,8 @@ class SessionClock extends React.Component
 }
 
 const stateToProps = state => ({
-    appState: mainSelectors.getAppState(state)
+    appState: mainSelectors.getAppState(state),
+    sessionState: mainSelectors.getSessionState(state)
 });
 
 const dispatchToProps = {

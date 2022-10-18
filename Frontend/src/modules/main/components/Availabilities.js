@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { connect } from "react-redux";
-import { selectors as mainSelectors } from "..";
+import { selectors as mainSelectors, actions as mainActions } from "..";
 
 const WEEKDAY_NAMES_LIST = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const highLightedColor = '#acab6e';
@@ -69,6 +69,8 @@ class DayColumn extends React.Component
                     friendAvailabilities={this.props.friendAvailabilities} 
                     groupAvailabilities={this.props.groupAvailabilities} 
                     methods={this.props.methods} key={this.props.weekday + '' + i} 
+                    sessionState={this.props.sessionState}
+                    setSessionState={this.props.setSessionState}
                     hour={i} weekday={this.props.weekday}
                 />
             );
@@ -90,7 +92,7 @@ class HourCell extends React.Component
 
         this.highLightedColor = '#4b4b3e';
 
-        const sessionState = this.props.methods.getSessionState();
+        const sessionState = this.props.sessionState;
         this.state = {
             availabilities: sessionState.availabilities,
             backgroundColor: ''
@@ -103,7 +105,7 @@ class HourCell extends React.Component
 
     async onClick()
     {
-        const sessionState = this.props.methods.getSessionState();
+        const sessionState = this.props.sessionState;
         const sessionId = sessionState.sessionId;
         const userId = sessionState.userId;
         
@@ -128,7 +130,7 @@ class HourCell extends React.Component
         }
 
         // Update the session with the new data
-        this.props.methods.setSessionState(res.data.content);
+        this.props.setSessionState(res.data.content);
 
         // Set the local state
         this.setState(res.data.content);
@@ -250,7 +252,7 @@ class Availabilities extends React.Component
 
     async matchWithFriend()
     {
-        const sessionState = this.props.methods.getSessionState();
+        const sessionState = this.props.sessionState;
         const sessionId = sessionState.sessionId;
         const userId = sessionState.userId;
         const friendUsername = this.state.friendUsername;
@@ -264,14 +266,14 @@ class Availabilities extends React.Component
             return;
         }
 
-        this.props.methods.setSessionState(res.data.content);
+        this.props.setSessionState(res.data.content);
         this.setState(res.data.content);
         this.setState({matchMode: 1});
     }
 
     async matchWithGroup()
     {
-        const sessionState = this.props.methods.getSessionState();
+        const sessionState = this.props.sessionState;
         const sessionId = sessionState.sessionId;
         const userId = sessionState.userId;
         const groupName = this.state.groupName;
@@ -285,7 +287,7 @@ class Availabilities extends React.Component
             return;
         }
         
-        this.props.methods.setSessionState(res.data.content);
+        this.props.setSessionState(res.data.content);
         this.setState(res.data.content);
         this.setState({matchMode: 2});
     }
@@ -335,6 +337,8 @@ class Availabilities extends React.Component
                     groupAvailabilities={this.state.groupAvailabilities} 
                     key={i} 
                     methods={this.props.methods} 
+                    setSessionState={this.props.setSessionState}
+                    sessionState={this.props.sessionState}
                     weekday={(nowWeekdayNumber + i) % 7}
                     highlightHour={this.highlightHour}
                     highlightWeekday={this.highlightWeekday}
@@ -398,7 +402,12 @@ class Availabilities extends React.Component
 }
 
 const stateToProps = state => ({
-    appState: mainSelectors.getAppState(state)
+    appState: mainSelectors.getAppState(state),
+    sessionState: mainSelectors.getSessionState(state)
 });
 
-export default connect(stateToProps)(Availabilities);
+const dispatchToProps = {
+    setSessionState: mainActions.setSessionState
+};
+
+export default connect(stateToProps, dispatchToProps)(Availabilities);

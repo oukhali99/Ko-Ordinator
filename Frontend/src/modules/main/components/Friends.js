@@ -1,13 +1,15 @@
 import React from 'react';
 import axios from 'axios';
+import { connect } from "react-redux";
+import { selectors as mainSelectors, actions as mainActions } from "..";
 
-export default class Friends extends React.Component
+class Friends extends React.Component
 {
     constructor(props)
     {
         super(props);
 
-        const sessionState = this.props.methods.getSessionState();
+        const sessionState = this.props.sessionState;
         this.state = {
             friends: sessionState.friends,
             friendRequests: sessionState.friendRequests,
@@ -16,7 +18,7 @@ export default class Friends extends React.Component
 
     render()
     {
-        const sessionState = this.props.methods.getSessionState();
+        const sessionState = this.props.sessionState;
         if (!sessionState.loggedIn)
         {
             return (
@@ -101,7 +103,11 @@ export default class Friends extends React.Component
                         </div>
                     </div><br/>
 
-                    <FriendForm methods={this.props.methods} setParentState={(data) => this.setState(data)}/>
+                    <FriendForm
+                        methods={this.props.methods}
+                        setParentState={(data) => this.setState(data)}
+                        sessionState={this.props.sessionState}
+                    />
                 </div>
             </div>
         );
@@ -125,7 +131,7 @@ class FriendForm extends React.Component
     async action(e, action)
     {
         e.preventDefault();
-        const sessionState = this.props.methods.getSessionState();
+        const sessionState = this.props.sessionState;
         const sessionId = sessionState.sessionId;
         const userId = sessionState.userId;
         const friendUsername = this.state.friendName;
@@ -146,7 +152,7 @@ class FriendForm extends React.Component
         }
 
         // Update the session state
-        this.props.methods.setSessionState(res.data.content);
+        this.props.setSessionState(res.data.content);
 
         // Update the local state
         this.props.setParentState(res.data.content);
@@ -223,3 +229,13 @@ class FriendForm extends React.Component
         );
     }
 }
+
+const stateToProps = state => ({
+    sessionState: mainSelectors.getSessionState(state)
+});
+
+const dispatchToProps = {
+    setSessionState: mainActions.setSessionState
+};
+
+export default connect(stateToProps, dispatchToProps)(Friends);

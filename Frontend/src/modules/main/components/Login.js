@@ -43,7 +43,7 @@ class Login extends React.Component
         }
 
         // Update the session
-        this.props.methods.setSessionState(res.data.content);
+        this.props.setSessionState(res.data.content);
 
         // Update appState
         this.props.setAppState({loggedIn: true});
@@ -129,7 +129,8 @@ const stateToProps = state => ({
 });
 
 const dispatchToProps = {
-    setAppState: mainActions.setAppState
+    setAppState: mainActions.setAppState,
+    setSessionState: mainActions.setSessionState
 };
 
 export default connect(stateToProps, dispatchToProps)(Login);

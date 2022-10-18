@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { connect } from "react-redux";
-import { selectors as mainSelectors } from "..";
+import { selectors as mainSelectors, actions as mainActions } from "..";
 
 class Groups extends React.Component
 {
@@ -9,7 +9,7 @@ class Groups extends React.Component
     {
         super(props);
         
-        const sessionState = this.props.methods.getSessionState();
+        const sessionState = this.props.sessionState;
         this.state = {
             name: '',
             password: '',
@@ -29,7 +29,7 @@ class Groups extends React.Component
             e.preventDefault();
         }
 
-        const sessionState = this.props.methods.getSessionState();
+        const sessionState = this.props.sessionState;
         const sessionId = sessionState.sessionId;
         const userId = sessionState.userId;
 
@@ -46,7 +46,7 @@ class Groups extends React.Component
             return;
         }
 
-        this.props.methods.setSessionState(res.data.content);
+        this.props.setSessionState(res.data.content);
         this.setState(res.data.content);
     }
 
@@ -58,7 +58,7 @@ class Groups extends React.Component
             return;
         }
 
-        const sessionState = this.props.methods.getSessionState();
+        const sessionState = this.props.sessionState;
         const sessionId = sessionState.sessionId;
         const userId = sessionState.userId;
 
@@ -72,7 +72,7 @@ class Groups extends React.Component
             return;
         }
 
-        this.props.methods.setSessionState(res.data.content);
+        this.props.setSessionState(res.data.content);
         this.setState(res.data.content);
         this.setState({expandedGroupIndex: index});
     }
@@ -141,7 +141,12 @@ class Groups extends React.Component
 }
 
 const stateToProps = state => ({
-    appState: mainSelectors.getAppState(state)
+    appState: mainSelectors.getAppState(state),
+    sessionState: mainSelectors.getSessionState(state)
 });
+
+const dispatchToProps = {
+    setSessionState: mainActions.setSessionState
+};
 
 export default connect(stateToProps)(Groups);

@@ -100,10 +100,7 @@ class App extends React.Component
 		}
 
 		const methods = {
-			setAppState: this.setAppState,
-			setSessionState: this.setSessionState,
-			clearSessionState: this.clearSessionState,
-			getSessionState: this.getSessionState
+			clearSessionState: this.clearSessionState
 		};
 
 		const appState = {
