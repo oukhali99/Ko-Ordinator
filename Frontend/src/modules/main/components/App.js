@@ -102,25 +102,20 @@ class App extends React.Component
 		const methods = {
 			clearSessionState: this.clearSessionState
 		};
-
-		const appState = {
-			_isMounted: this.state._isMounted,
-			loggedIn: this.state.loggedIn
-		}
 		
 		return (
 			<div className='main'>
 				<Router>
-					<Navbar methods={methods} appState={appState}/><br/>
+					<Navbar methods={methods}/><br/>
 					<Route path="/" exact component={Home}/>
-					<Route path="/login" component={() => <Login methods={methods} appState={appState}/>}/>
-					<Route path="/register" component={() => <Register methods={methods} appState={appState}/>}/>				
+					<Route path="/login" component={() => <Login methods={methods}/>}/>
+					<Route path="/register" component={() => <Register methods={methods}/>}/>				
 					<Route path="/admin" component={AdminPanel}/>		
 					<Route path="/userList" component={UserList}/>
-					<Route path="/friends" component={() => <Friends methods={methods} appState={appState}/>}/>
-					<Route path="/availabilities" component={() => <Availabilities methods={methods} appState={appState}/>}/>
-					<Route path="/groups" component={() => <Groups methods={methods} appState={appState}/>}/>
-					<Route path="/otherApps" component={() => <RegisterApp methods={methods} appState={appState}/>}/>
+					<Route path="/friends" component={() => <Friends methods={methods}/>}/>
+					<Route path="/availabilities" component={() => <Availabilities methods={methods}/>}/>
+					<Route path="/groups" component={() => <Groups methods={methods}/>}/>
+					<Route path="/otherApps" component={() => <RegisterApp methods={methods}/>}/>
 				</Router>
 			</div>
 		);
