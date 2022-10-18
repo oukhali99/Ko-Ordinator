@@ -149,4 +149,4 @@ const dispatchToProps = {
     setSessionState: mainActions.setSessionState
 };
 
-export default connect(stateToProps)(Groups);
+export default connect(stateToProps, dispatchToProps)(Groups);
