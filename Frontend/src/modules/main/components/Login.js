@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { connect } from "react-redux";
+import { actions as mainActions, selectors as mainSelectors } from "..";
 
 class Login extends React.Component
 {
@@ -44,7 +46,7 @@ class Login extends React.Component
         this.props.methods.setSessionState(res.data.content);
 
         // Update appState
-        this.props.methods.setAppState({loggedIn: true});
+        this.props.setAppState({loggedIn: true});
     }
     
     changeUsernameHandler(e)
@@ -122,4 +124,12 @@ class Login extends React.Component
     }
 }
 
-export default Login;
+const stateToProps = state => ({
+    appState: mainSelectors.getAppState(state)
+});
+
+const dispatchToProps = {
+    setAppState: mainActions.setAppState
+};
+
+export default connect(stateToProps, dispatchToProps)(Login);

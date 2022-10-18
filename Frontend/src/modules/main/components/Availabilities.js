@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import { connect } from "react-redux";
+import { selectors as mainSelectors } from "..";
 
 const WEEKDAY_NAMES_LIST = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const highLightedColor = '#acab6e';
@@ -220,7 +222,7 @@ class HourCell extends React.Component
     }
 }
 
-export default class Availabilities extends React.Component
+class Availabilities extends React.Component
 {
     constructor(props)
     {
@@ -394,3 +396,9 @@ export default class Availabilities extends React.Component
         );        
     }
 }
+
+const stateToProps = state => ({
+    appState: mainSelectors.getAppState(state)
+});
+
+export default connect(stateToProps)(Availabilities);

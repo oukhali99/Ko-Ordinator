@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from 'axios';
+import { connect } from "react-redux";
+import { selectors as mainSelectors } from "..";
 
-export default class Groups extends React.Component
+class Groups extends React.Component
 {
     constructor(props)
     {
@@ -137,3 +139,9 @@ export default class Groups extends React.Component
         );
     }
 }
+
+const stateToProps = state => ({
+    appState: mainSelectors.getAppState(state)
+});
+
+export default connect(stateToProps)(Groups);

@@ -1,8 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { connect } from "react-redux";
+import { actions as mainActions, selectors as mainSelectors } from "..";
 
-export default class AccountController extends React.Component
+class AccountController extends React.Component
 {
     constructor(props)
     {
@@ -24,7 +26,7 @@ export default class AccountController extends React.Component
         this.props.methods.clearSessionState();
 
         // Update appState
-        this.props.methods.setAppState({loggedIn: false});
+        this.props.setAppState({loggedIn: false});
     }
 
     render()
@@ -134,3 +136,13 @@ class SessionClock extends React.Component
         );
     }
 }
+
+const stateToProps = state => ({
+    appState: mainSelectors.getAppState(state)
+});
+
+const dispatchToProps = {
+    setAppState: mainActions.setAppState
+};
+
+export default connect(stateToProps, dispatchToProps)(AccountController);

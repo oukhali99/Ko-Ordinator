@@ -28,7 +28,7 @@ class Navbar extends React.Component
                         </li>
                     </ul>
                 </div>
-                <AccountController methods={this.props.methods} appState={this.props.appState}/>
+                <AccountController methods={this.props.methods}/>
             </nav>
             );
         }
