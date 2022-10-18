@@ -18,8 +18,7 @@ class Friends extends React.Component
 
     render()
     {
-        const sessionState = this.props.sessionState;
-        if (!sessionState.loggedIn)
+        if (!this.props.appState.loggedIn)
         {
             return (
                 <div
@@ -231,6 +230,7 @@ class FriendForm extends React.Component
 }
 
 const stateToProps = state => ({
+    appState: mainSelectors.getAppState(state),
     sessionState: mainSelectors.getSessionState(state)
 });
 
