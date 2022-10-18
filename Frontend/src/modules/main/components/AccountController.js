@@ -39,6 +39,7 @@ class AccountController extends React.Component
                     loggedIn={loggedIn}
                     sessionState={this.props.sessionState}
                     setSessionState={this.props.setSessionState}
+                    clearSessionState={this.props.clearSessionState}
                 />
                 <div style={{color: "white", display: "inline-block", marginRight: "10px"}}>
                     {username}
@@ -79,12 +80,18 @@ class SessionClock extends React.Component
 
         this.tick = this.tick.bind(this);
         this.updateSessionFromAPI = this.updateSessionFromAPI.bind(this);
+        this.isValidSession = this.isValidSession.bind(this);
     }
 
     componentDidMount()
     {
         this.timerId = setInterval(this.tick, 1000);
-        this.pollAPIId = setInterval(async () => { await this.updateSessionFromAPI() }, 1000 * process.env.REACT_APP_API_POLL_INTERVAL_S)
+        this.pollAPIId = setInterval(async () => { 
+            await this.updateSessionFromAPI();
+            if (!(await this.isValidSession())) {
+                this.props.clearSessionState();
+            }
+        }, 1000 * process.env.REACT_APP_API_POLL_INTERVAL_S)
     }
     componentWillUnmount()
     {
@@ -124,6 +131,29 @@ class SessionClock extends React.Component
 
         // Set the states to reflect the fact that you are logged in
         this.props.setSessionState(data);
+    }
+
+    async isValidSession()
+    {
+        const sessionId = this.props.sessionState.sessionId;
+        const userId = this.props.sessionState.userId;
+
+        // Validate the inputs
+        if (sessionId === undefined || sessionId === '' || userId === undefined || userId === '')
+        {
+            console.log('No session found in sessionStorage');
+            return false;
+        }
+
+        const res = await axios.post(process.env.REACT_APP_SERVER_URL + '/users/isUserSessionValid', { sessionId, userId });
+        const success = res.data.success;
+        const message = res.data.message;
+        console.log('Validating session... ' + message);
+        if (!success)
+        {
+            return false;
+        }
+        return res.data.content.valid;
     }
 
     render()
