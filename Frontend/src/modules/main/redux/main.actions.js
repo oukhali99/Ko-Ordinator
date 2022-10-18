@@ -11,3 +11,7 @@ export const setAppState = (data) => async (dispatch, getState) => {
 export const setSessionState = (data) => async (dispatch, getState) => {
     dispatch(setSessionStateAction(data));
 };
+
+export const clearSessionState = () => async (dispatch, getState) => {
+    dispatch(clearSessionStateAction());
+};

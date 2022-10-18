@@ -23,7 +23,7 @@ class AccountController extends React.Component
         console.log('Logging off... ' + res.data.message);
 
         // Update the session
-        this.props.methods.clearSessionState();
+        this.props.clearSessionState();
 
         // Update appState
         this.props.setAppState({loggedIn: false});
@@ -143,7 +143,8 @@ const stateToProps = state => ({
 });
 
 const dispatchToProps = {
-    setAppState: mainActions.setAppState
+    setAppState: mainActions.setAppState,
+    clearSessionState: mainActions.clearSessionState
 };
 
 export default connect(stateToProps, dispatchToProps)(AccountController);

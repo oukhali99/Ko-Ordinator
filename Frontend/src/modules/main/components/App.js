@@ -99,9 +99,7 @@ class App extends React.Component
 			);
 		}
 
-		const methods = {
-			clearSessionState: this.clearSessionState
-		};
+		const methods = {};
 		
 		return (
 			<div className='main'>

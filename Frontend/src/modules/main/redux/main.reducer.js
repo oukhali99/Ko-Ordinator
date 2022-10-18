@@ -26,6 +26,6 @@ export default createReducer(initialState, {
         state.sessionState = action.payload;
     },
     [mainActions.clearSessionStateAction]: (state, action) => {
-
+        state = initialState;
     }
 });
