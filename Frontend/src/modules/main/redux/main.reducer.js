@@ -18,22 +18,25 @@ const initialState = {
     }
 };
 
-export default createReducer(initialState, {
+const persistedInitialState = JSON.parse(JSON.stringify(initialState));
+
+// Read the session storage
+persistedInitialState.appState.loggedIn = sessionStorage.getItem("state.appState.loggedIn") === "true" ? true : false;
+persistedInitialState.sessionState.sessionId = sessionStorage.getItem("state.sessionState.sessionId") || undefined;
+persistedInitialState.sessionState.userId = sessionStorage.getItem("state.sessionState.userId") || undefined;
+
+export default createReducer(persistedInitialState, {
     [mainActions.setAppStateAction]: (state, action) => {
-        state.appState.loggedIn = action.payload.loggedIn || state.appState.loggedIn;
+        state.appState = {...action.payload};
+        sessionStorage.setItem("state.appState.loggedIn", state.appState.loggedIn);
     },
     [mainActions.setSessionStateAction]: (state, action) => {
-        state.sessionState.pollAPI = action.payload.loggedIn || state.sessionState.pollAPI;
-        state.sessionState.username = action.payload.username || state.sessionState.username;
-        state.sessionState.sessionId = action.payload.sessionId || state.sessionState.sessionId;
-        state.sessionState.userId = action.payload.userId || state.sessionState.userId;
-        state.sessionState.availabilities = action.payload.availabilities || state.sessionState.availabilities;
-        state.sessionState.friends = action.payload.friends || state.sessionState.friends;
-        state.sessionState.friendRequests = action.payload.friendRequests || state.sessionState.friendRequests;
-        state.sessionState.groups = action.payload.groups || state.sessionState.groups;
-        state.sessionState.sessionTimestamp = action.payload.sessionTimestamp || state.sessionState.sessionTimestamp;
+        state.sessionState = {...action.payload};
+        sessionStorage.setItem("state.sessionState.userId", state.sessionState.userId);
+        sessionStorage.setItem("state.sessionState.sessionId", state.sessionState.sessionId);
     },
     [mainActions.clearSessionStateAction]: (state, action) => {
-        state = initialState;
+        sessionStorage.clear();
+        return {...initialState};
     }
 });

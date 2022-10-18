@@ -24,9 +24,6 @@ class AccountController extends React.Component
 
         // Update the session
         this.props.clearSessionState();
-
-        // Update appState
-        this.props.setAppState({loggedIn: false});
     }
 
     render()

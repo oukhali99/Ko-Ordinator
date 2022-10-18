@@ -304,7 +304,7 @@ router.route('/logoff').post(async (req, res) => {
     }
     catch (e)
     {
-        handleError(e, res, true, false, true);
+        handleError(e, res, true, true, true);
     }
 });
 
